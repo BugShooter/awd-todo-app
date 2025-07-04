@@ -24,7 +24,8 @@ test("renders a list called 'Lists' with 4 ListItems ", () => {
 
   expect(listHeading).toBeInTheDocument();
   expect(list).toBeInTheDocument();
-  expect(listItems).toHaveLength(4);
+  // TODO: set 4 when do StickyWall ListItem in components/Navigation/ListsSection.tsx uncomment
+  expect(listItems).toHaveLength(3);
 });
 
 test("renders a dark mode toggle switch ", () => {

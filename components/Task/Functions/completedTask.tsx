@@ -1,4 +1,4 @@
-export async function completedTask(taskId) {
+export async function completedTask(taskId: number) {
   return await fetch(`/api/tasks/${taskId}`, {
     method: "PATCH",
     headers: {
