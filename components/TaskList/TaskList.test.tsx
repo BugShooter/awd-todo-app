@@ -8,7 +8,7 @@ const tasks = [
   { _id: 3, title: "Task 3", completed: false },
 ];
 
-jest.mock("../Task/functions/completedTask");
+jest.mock("../Task/Functions/completedTask");
 
 describe("view a list of tasks", () => {
   it("render the tasklist", () => {
