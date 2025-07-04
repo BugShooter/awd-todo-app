@@ -1,15 +1,25 @@
 {
-  "env": {
-    "jest": true
-  },
-  "extends": ["next/babel", "next/core-web-vitals", "plugin:jest/recommended"],
-  "rules": {
-    "import/no-anonymous-default-export": [
-      "error",
-      {
-        "allowObject": true
-      }
-    ]
-  },
-  "plugins": ["jest"]
+    "env": {
+        "jest": true
+    },
+    "parser": "@typescript-eslint/parser",
+    "plugins": [
+        "jest",
+        "@typescript-eslint"
+    ],
+    "extends": [
+        "plugin:@typescript-eslint/recommended",
+        "plugin:@typescript-eslint/stylistic",
+        "next",
+        "next/core-web-vitals",
+        "plugin:jest/recommended"
+    ],
+    "rules": {
+        "import/no-anonymous-default-export": [
+            "error",
+            {
+                "allowObject": true
+            }
+        ]
+    }
 }
