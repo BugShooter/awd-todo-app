@@ -1,9 +1,27 @@
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
 
-export const useTaskStore = create(
+export interface ITaskStore {
+  funMode: boolean,
+  setupMode: boolean,
+  finishSetup: () => void,
+  activeList: null|string,
+  setActiveList: (newActiveList: string) => void,
+  searchTerm: string,
+  setSearchTerm: (newSearchTerm: string) => void,
+  toggleFunMode: () => void,
+  countingTasks: ITask[],
+  setCountingTasks: (newCountingTasks: ITask[]) => void,
+  countCompletedTasks: number,
+  countActiveTasks: number,
+
+  setCountCompletedTasks: () => void,
+  setActiveTasks: () => void,
+}
+
+export const useTaskStore = create<ITaskStore>()(
   persist(
-    (set) => ({
+    (set, get) => ({
       funMode: false,
       setupMode: true,
       finishSetup: () => set({ setupMode: false }),
@@ -16,18 +34,19 @@ export const useTaskStore = create(
           funMode: !state.funMode,
         })),
       countingTasks: [],
-      setCountingTasks: (newCountingTasks) => set({ countingTasks: newCountingTasks }),
+      setCountingTasks: (newCountingTasks: ITask[]) => set({ countingTasks: newCountingTasks }),
       countCompletedTasks: 0,
       countActiveTasks: 0,
 
       setCountCompletedTasks: () => {
-        const count = countingTasks.reduce((count, task) => (task.completed ? count + 1 : count), 0);
+
+        const count = get().countingTasks.reduce((count, task) => (task.completed ? count + 1 : count), 0);
         set({ countCompletedTasks: count });
       },
 
       setActiveTasks: () => {
-        const countCompleted = countingTasks.reduce((count, task) => (task.completed ? count + 1 : count), 0);
-        const active = countingTasks.length - countCompleted;
+        const countCompleted = get().countingTasks.reduce((count, task) => (task.completed ? count + 1 : count), 0);
+        const active = get().countingTasks.length - countCompleted;
         set({ countActiveTasks: active });
       },
     }),

@@ -21,7 +21,11 @@ import { useSWRConfig } from "swr";
 import { useTaskStore } from "@/store";
 import JSConfetti from "js-confetti";
 
-export default function TaskList({ tasks }) {
+interface TaskListProps {
+  tasks: ITask[]
+}
+
+export default function TaskList({ tasks }: TaskListProps) {
   const toast = useToast();
   const { mutate } = useSWRConfig();
   const funMode = useTaskStore((state) => state.funMode);
@@ -32,7 +36,7 @@ export default function TaskList({ tasks }) {
     task.title.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  const handleDeleteTask = async (taskId) => {
+  const handleDeleteTask = async (taskId: string) => {
     try {
       await deleteTask(taskId);
       mutate("/api/tasks");
@@ -45,20 +49,37 @@ export default function TaskList({ tasks }) {
       });
     } catch (error) {
       mutate("/api/tasks");
+
+      let errorMessage: string;
+      if (error instanceof Error) {
+        errorMessage = error.message;
+      } else if (typeof error === 'string') {
+        errorMessage = error;
+      } else {
+        errorMessage = 'Unknown error';
+        console.error(
+          new Error(errorMessage, {
+            cause: error,
+          })
+        );
+      }
       toast({
         title: "Error deleting task",
-        description: error.message,
+        description: errorMessage,
         status: "error",
         duration: 5000,
         isClosable: true,
       });
     }
   };
-  const handleEditTask = async (taskId, nextValue) => {
+  const handleEditTask = async (taskId: string, nextValue: string) => {
     try {
-      mutate(
+      // NOTE: use generic for mutate typisation
+      // NOTE: type is T|undefined
+      mutate<ITask[]>(
         "/api/tasks",
         (data) => {
+          if (!data) return [];
           return data.map((task) => {
             if (task._id === taskId) {
               return { ...task, title: nextValue };
@@ -66,7 +87,7 @@ export default function TaskList({ tasks }) {
             return task;
           });
         },
-        true
+        false // Don't fetch before save
       );
       await editTask(taskId, nextValue);
 
@@ -76,7 +97,7 @@ export default function TaskList({ tasks }) {
     }
   };
 
-  const handleCompletedTask = async (taskId) => {
+  const handleCompletedTask = async (taskId: string) => {
     try {
       const task = await completedTask(taskId);
       if (task.completed) {
@@ -96,9 +117,20 @@ export default function TaskList({ tasks }) {
         }
       }
     } catch (error) {
+      let errorMessage: string;
+      if (error instanceof Error) {
+        errorMessage = error.message;
+      } else if (typeof error === "string") {
+        errorMessage = error;
+      } else {
+        errorMessage = 'Unknown error';
+        console.error(
+          new Error(errorMessage, { cause: error })
+        );
+      }
       toast({
         title: "Error completing task",
-        description: error.message,
+        description: errorMessage,
         status: "error",
         duration: 5000,
         isClosable: true,
@@ -122,11 +154,11 @@ export default function TaskList({ tasks }) {
               ></Checkbox>
 
               <Editable
-                
+
                 defaultValue={task.title}
                 onSubmit={(nextValue) => handleEditTask(task._id, nextValue)}
               >
-                <EditablePreview as={task.completed ? "del" : ""} />
+                <EditablePreview as={task.completed ? "del" : undefined} />
                 <Input
                   as={EditableInput}
                   focusBorderColor="teal.400"

@@ -5,7 +5,11 @@ import MenuContainer from "../Navigation/MenuContainer";
 import { ColorModeScript, Box, Wrap, HStack } from "@chakra-ui/react";
 import { theme } from "../../theme";
 
-const Layout = ({ children, title }) => {
+type LayoutProps = {
+  title: string;
+} & React.PropsWithChildren;
+
+const Layout = ({ children, title }: LayoutProps) => {
   return (
     <SWRConfig>
       <Head>

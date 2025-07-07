@@ -14,7 +14,7 @@ test("renders a search bar", () => {
   expect(searchbar).toBeInTheDocument();
 });
 
-test("renders a list called 'Lists' with 4 ListItems ", () => {
+test("renders a list called 'Lists' with 4 ListItems", () => {
   render(<MenuContainer />);
   const listHeading = screen.getByRole("heading", { name: /lists/i });
 
@@ -28,13 +28,13 @@ test("renders a list called 'Lists' with 4 ListItems ", () => {
   expect(listItems).toHaveLength(3);
 });
 
-test("renders a dark mode toggle switch ", () => {
+test("renders a dark mode toggle switch", () => {
   render(<MenuContainer />);
   const darkToggle = screen.getByRole("checkbox", { name: /Dark Mode/i });
   expect(darkToggle).toBeInTheDocument();
 });
 
-test.skip("renders a Fun mode toggle switch ", () => {
+test("renders a Fun mode toggle switch", () => {
   render(<MenuContainer />);
   const darkToggle = screen.getByRole("checkbox", { name: /Fun Mode/i });
   expect(darkToggle).toBeInTheDocument();

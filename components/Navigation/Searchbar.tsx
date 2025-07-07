@@ -13,9 +13,9 @@ export default function Search() {
   const setSearchTerm = useTaskStore((state) => state.setSearchTerm);
   const [inputValue, setInputValue] = useState("");
 
-  const handleSearchChange = (event) => {
-    setInputValue(event.target.value);
-    setSearchTerm(event.target.value);
+  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setInputValue(event.currentTarget.value);
+    setSearchTerm(event.currentTarget.value);
   };
 
   const handleResetSearch = () => {
