@@ -15,7 +15,7 @@ const UpcomingPage = () => {
     data: upcomingTasks,
     isLoading,
     error,
-  } = useSWR("/api/tasks", async () =>
+  } = useSWR<ITask[]>("/api/tasks", async () =>
     (await fetch("/api/status/upcoming")).json()
   );
   if (!upcomingTasks) {

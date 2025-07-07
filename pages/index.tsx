@@ -1,7 +1,7 @@
 "use client";
 import MainContainer from "@/components/Navigation/MainContainer";
 import { Spinner, Box, Heading } from "@chakra-ui/react";
-import { React, useEffect } from "react";
+import { useEffect } from "react";
 import Layout from "@/components/Layout/Layout";
 import TaskList from "@/components/TaskList/TaskList";
 import useSWR from "swr";
@@ -10,7 +10,7 @@ import AddTaskInput from "@/components/Task/AddTaskInput";
 import SetupModal from "@/components/Modal/Modal";
 
 const IndexPage = () => {
-  const { data: tasks, isLoading, error } = useSWR("/api/tasks");
+  const { data: tasks, isLoading, error } = useSWR<ITask[]>("/api/tasks");
 
   const setActiveList = useTaskStore((state) => state.setActiveList);
   const setCountingTasks = useTaskStore((state) => state.setCountingTasks);

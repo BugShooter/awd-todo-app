@@ -1,6 +1,7 @@
 "use client";
 import React from "react";
 import Layout from "@/components/Layout/Layout";
+import { Box, Heading, } from "@chakra-ui/react";
 import MainContainer from "@/components/Navigation/MainContainer";
 import TaskList from "@/components/TaskList/TaskList";
 import useSWR from "swr";
