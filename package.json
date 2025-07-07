@@ -7,6 +7,10 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
+    "lint:eslint": "eslint . --ext .ts,.tsx",
+    "type-check": "tsc --noEmit",
+    "type-check:watch": "tsc --noEmit --watch",
+    "check-all": "npm run type-check && npm run lint && npm run lint:eslint",
     "test": "jest --watchAll"
   },
   "dependencies": {
@@ -33,6 +37,8 @@
     "@testing-library/jest-dom": "^6.2.0",
     "@testing-library/react": "^14.1.2",
     "@testing-library/user-event": "^14.4.3",
+    "@types/jest": "^30.0.0",
+    "@typescript-eslint/eslint-plugin": "^6.21.0",
     "babel-jest": "^27.0.6",
     "eslint": "^8",
     "eslint-config-next": "14.0.4",
