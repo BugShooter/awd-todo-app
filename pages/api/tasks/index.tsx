@@ -1,7 +1,8 @@
 import dbConnect from "@/db/connect";
 import Task from "@/db/models/Task";
+import { NextApiRequest, NextApiResponse } from "next";
 
-export default async function handler(request, response) {
+export default async function handler(request: NextApiRequest, response: NextApiResponse) {
   await dbConnect();
 
   if (request.method === "GET") {
@@ -16,8 +17,17 @@ export default async function handler(request, response) {
       const record = await task.save();
       return response.status(201).json(record);
     } catch (error) {
-      console.error(error);
-      return response.status(400).json({ error: error.message });
+      let errorMessage: string;
+      if (error instanceof Error) {
+        errorMessage = error.message
+      } else if (typeof error === 'string') {
+        errorMessage = error;
+      } else {
+        errorMessage = "Unknown error";
+        console.error(new Error("Unknown error type", { cause: error }));
+      }
+      console.error(errorMessage);
+      return response.status(400).json({ error: errorMessage });
     }
   }
 }
