@@ -14,6 +14,14 @@ interface TaskFormElements extends HTMLFormControlsCollection {
 interface TaskFormElement extends HTMLFormElement {
   readonly elements: TaskFormElements
 }
+interface addTaskPayload {
+  title: string;
+}
+function formDataToAddTaskPayload(formData: FormData): addTaskPayload {
+  return {
+    title: String(formData.get("title") ?? ""),
+  };
+}
 
 export default function AddTaskInput({ afterSubmit }: AddTaskInputProps) {
   const { mutate } = useSWRConfig();
@@ -21,10 +29,10 @@ export default function AddTaskInput({ afterSubmit }: AddTaskInputProps) {
   const handleSubmit = async (event: React.FormEvent<TaskFormElement>) => {
     event.preventDefault();
     const formData = new FormData(event.currentTarget); // FIXME: currentTarget better than target?
-    const taskTitle = String(Object.fromEntries(formData));
+    const addTaskPayload: addTaskPayload = formDataToAddTaskPayload(formData);
 
     try {
-      await AddTask(taskTitle);
+      await AddTask(addTaskPayload);
       mutate("/api/tasks");
 
       const inputElement = event.currentTarget.elements.title;
